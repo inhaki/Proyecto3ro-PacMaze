@@ -18,5 +18,14 @@ public class VentanaJuegoLvl1 extends JFrame{
 	ComecocosJuego miCoco;  //Personaje Comecocos
 	//MiRunnable miHile= null; //Hilo del bucle principal
 	
+	public VentanaJuegoLvl1(){
+		setDefaultCloseOperation (JFrame.DISPOSE_ON_CLOSE);
+		p1= new JPanel();
+		p1.setLayout(null);
+		p1.setBackground(Color.white);
+		add(p1, BorderLayout.CENTER);
+		setSize(1000, 750);
+		setResizable(false);
+	}
 	
 }
