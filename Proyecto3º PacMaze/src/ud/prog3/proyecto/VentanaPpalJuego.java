@@ -11,7 +11,7 @@ public class VentanaPpalJuego extends JFrame{
 	 * Estudiantes doble grado de 3ºADE+Ing.Informática (UD2015)
 	 */
 	private static final long serialVersionUID = 1L;
-	JPanel pPrincipal; //Panel inicial del juego
+	/*JPanel pPrincipal; //Panel inicial del juego
 	
 	public VentanaPpalJuego(){
 		setDefaultCloseOperation( JFrame.DISPOSE_ON_CLOSE );//para cerrar la ventana al cambiar de ventana
@@ -21,5 +21,8 @@ public class VentanaPpalJuego extends JFrame{
 		getContentPane().setLayout(null);
 		
 		
-	}
+	}*/
+	/*public static void main (String Args[]){
+		new VentanaJuegoNivel1();
+	}*/
 }
