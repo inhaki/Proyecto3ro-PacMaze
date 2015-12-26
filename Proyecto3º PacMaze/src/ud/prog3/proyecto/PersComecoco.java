@@ -4,6 +4,8 @@ import javax.swing.*;
 
 public class PersComecoco extends PersonajeJuego{
 	
+	private static boolean ESFERA_COCO=false;//dibujado para el caso de choque
+	
 	//Constructor inicial, saldrá la imagen orientada a la derecha
 	public PersComecoco(){
 		super.ImagenCoco= new ImageIcon("Imagenes/PersonajesJuego/PacmanDerecha.gif");

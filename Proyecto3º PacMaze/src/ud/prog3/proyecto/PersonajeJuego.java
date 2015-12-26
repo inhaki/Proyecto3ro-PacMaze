@@ -12,6 +12,8 @@ public class PersonajeJuego extends JLabel{
 	
 	protected ImageIcon ImagenCoco;//Imagen del Comecoco-Personaje1
 	protected ImageIcon ImagenEstrella;//Imagen del arraylist de estrellas que habra
+	protected ImageIcon ImagenManzana;//Imagen de la manzana--hacer TEST
+	protected ImageIcon ImagenObjEstrella;//Imagen de la estrella de bonificacion--hacer TEST sobre si dobla velocidad o n
 	protected int PosicionX=0;//Posicion del comecoco en X se da valor en VentanaJuegoNivel1
 	protected int PosicionY=0;//Posicion en Y del comecoco
 	protected int Velocidad=2;//Velocidad inicial que va a tener el personaje
@@ -74,6 +76,8 @@ public class PersonajeJuego extends JLabel{
 	 protected void CambiarVelocidad(int NuevoValor){Velocidad = NuevoValor;}
 	 protected ImageIcon ObtenerImagen(){return ImagenCoco;}
 	 protected ImageIcon ObtenerEstrella(){return ImagenEstrella;}
+	 protected ImageIcon ObjeterManzana(){return ImagenManzana;}
+	 protected ImageIcon ObjtenerEstrellaPuntas(){return ImagenObjEstrella;}
 	 protected boolean CambioDireccion = true;
 	 
 	 protected boolean VerificarParedes(int PosX, int PosY)
@@ -102,6 +106,7 @@ public class PersonajeJuego extends JLabel{
 	{//MUEVE EL OBJETO SEGUN LO QUE APUNTE EL TECLADO
 	 //ARRIBA ES EL CODIGO 1, ABAJO CODIGO 2, DER CODIGO 3, IZDA CODIGO 4
 		Timer BucleJuego = new Timer(15, new ActionListener()
+		//timer para refrescar la posicion del comecoco cada ese tiempo
 	    { 
 			public void actionPerformed(ActionEvent e) 
 	        {
@@ -135,7 +140,8 @@ public class PersonajeJuego extends JLabel{
 	                }
 	             } 
 	        });
-	        BucleJuego.start();
+	       BucleJuego.start();
+	        
 	    }
 	    
 	    private void MoverPosicionPersonaje()
