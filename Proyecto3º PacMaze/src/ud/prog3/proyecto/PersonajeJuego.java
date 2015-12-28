@@ -14,6 +14,7 @@ public class PersonajeJuego extends JLabel{
 	protected ImageIcon ImagenEstrella;//Imagen del arraylist de estrellas que habra
 	protected ImageIcon ImagenManzana;//Imagen de la manzana--hacer TEST
 	protected ImageIcon ImagenObjEstrella;//Imagen de la estrella de bonificacion--hacer TEST sobre si dobla velocidad o n
+	protected ImageIcon ImagenCamino;//Imagen del la casilla camino de 20x20 para "borrar" objetos
 	protected int PosicionX=0;//Posicion del comecoco en X se da valor en VentanaJuegoNivel1
 	protected int PosicionY=0;//Posicion en Y del comecoco
 	protected int Velocidad=2;//Velocidad inicial que va a tener el personaje
@@ -76,8 +77,9 @@ public class PersonajeJuego extends JLabel{
 	 protected void CambiarVelocidad(int NuevoValor){Velocidad = NuevoValor;}
 	 protected ImageIcon ObtenerImagen(){return ImagenCoco;}
 	 protected ImageIcon ObtenerEstrella(){return ImagenEstrella;}
-	 protected ImageIcon ObjeterManzana(){return ImagenManzana;}
-	 protected ImageIcon ObjtenerEstrellaPuntas(){return ImagenObjEstrella;}
+	 protected ImageIcon ObtenerManzana(){return ImagenManzana;}
+	 protected ImageIcon ObtenerEstrellaPuntas(){return ImagenObjEstrella;}
+	 protected ImageIcon ObtenerCamino(){return ImagenCamino;}
 	 protected boolean CambioDireccion = true;
 	 
 	 protected boolean VerificarParedes(int PosX, int PosY)
@@ -115,8 +117,8 @@ public class PersonajeJuego extends JLabel{
 	            	if(Arriba)
 	                if(!VerificarParedes(PosicionX,PosicionY - Velocidad))
 	                {
-	                     CodDireccion = 1;
-	                     CambiarImagen();//LLAMA AL METODO PROTECTED DE ESTA CLASE, ABAJO DEL TODO, ESTÁ VACÍO
+	                	CodDireccion = 1;
+	                    CambiarImagen();//LLAMA AL METODO PROTECTED DE ESTA CLASE, ABAJO DEL TODO, ESTÁ VACÍO
 	                     //HAY UN METODO CAMBIAR IMAGEN EN LA CLASE Usuario
 	                     //DEPENDIENDO DE LA DIRECCION, EL CODIGO, LA IMAGEN MIRA HACIA UN LADO U OTRO
 	                }

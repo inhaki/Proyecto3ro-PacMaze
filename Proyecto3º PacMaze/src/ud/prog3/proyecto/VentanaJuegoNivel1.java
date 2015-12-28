@@ -20,17 +20,23 @@ public class VentanaJuegoNivel1 extends JFrame implements KeyListener{
 	private Laberinto1 LaberintoVirtual = new Laberinto1();//tipo Laberinto1 que es la clase que tiene la forma del laberinto
     private JLabel[][] LaberintoGrafico = new JLabel[LaberintoVirtual.DevolverCantidadFilasLaberinto()][LaberintoVirtual.DevolverCantidadColumnasLaberinto(0)];
     private PersComecoco Pacman = new PersComecoco();//comecoco del juego
+    private PersonajeJuego avatar= new PersonajeJuego();//avatar del juego
     private ObjManzana manzana= new ObjManzana();//manzana que aparece de bonificación
     private ObjEstrellaPuntas estrellaPuntas= new ObjEstrellaPuntas();//Estrella de 5 puntas que da bonificación
+    private ObjCamino camino= new ObjCamino();//pixel del camino que sirve para eliminar objetos sobreponiendo la imagen
     ArrayList<ObjEstrella> estrellas = new ArrayList<>();//ArrayList que contiene las bolas del juego
     private JLabel PersComecoco = new JLabel();//label para el avatar comecoco
     private JLabel ObjManzana= new JLabel();//label para el objeto manzana
     private JLabel ObjEstrellaPuntas= new JLabel();//label para el objeto Estrella
+    private JLabel ObjCamino= new JLabel();//Label para el camino extra
     private boolean PartidaTerminada = false;
     private JLabel EstrellaBola= new JLabel();
     private JTextField textMinutos;
     private JTextField textSegundos;
     Timer myTimer;//timer para el contador
+    private boolean parado;//para parar el tiempo si se excede la puntuacion
+    private JTextField textPuntuacion;
+   
       
     /**Constructor de la ventana, crea y devuelve la ventana inicializada
      * no hay ningún avatar dentro
@@ -55,9 +61,10 @@ public class VentanaJuegoNivel1 extends JFrame implements KeyListener{
         //CONTADOR JUEGO
         //CASILLA DE LOS MINUTOS
         textMinutos = new JTextField();
+        textMinutos.setHorizontalAlignment(SwingConstants.RIGHT);
         textMinutos.setEditable(false);
         textMinutos.setFont(new Font("Tahoma", Font.BOLD, 18));
-        textMinutos.setBounds(236, 429, 68, 29);
+        textMinutos.setBounds(252, 429, 52, 29);
         getContentPane().add(textMinutos);
         textMinutos.setColumns(10);
         //CASILLA DE LOS SEGUNDOS
@@ -65,12 +72,27 @@ public class VentanaJuegoNivel1 extends JFrame implements KeyListener{
         textSegundos.setEditable(false);
         textSegundos.setFont(new Font("Tahoma", Font.BOLD, 18));
         textSegundos.setColumns(10);
-        textSegundos.setBounds(305, 429, 68, 29);
+        textSegundos.setBounds(305, 429, 52, 29);
         getContentPane().add(textSegundos);
-        
         //VALORES INICIALES
         textMinutos.setText("02");
-        textSegundos.setText("03");
+        textSegundos.setText("07");
+        //CASILLA DE LA PUNTUACION
+        textPuntuacion =new JTextField();
+        textPuntuacion.setHorizontalAlignment(SwingConstants.RIGHT);
+        textPuntuacion.setFont(new Font("Tahoma", Font.BOLD, 44));
+        textPuntuacion.setEditable(false);
+        textPuntuacion.setBounds(30, 423, 200, 47);
+        getContentPane().add(textPuntuacion);
+        textPuntuacion.setColumns(10);
+        //VALOR INICIAL
+        textPuntuacion.setText("0");     
+        //LABEL PUNTUACION
+        JLabel lblPuntuacion = new JLabel("PUNTUACION");
+        lblPuntuacion.setHorizontalAlignment(SwingConstants.CENTER);
+        lblPuntuacion.setFont(new Font("Tahoma", Font.BOLD, 14));
+        lblPuntuacion.setBounds(65, 471, 129, 20);
+        getContentPane().add(lblPuntuacion);
         
         //NO FUNCIONA BIEN ESTE HILO
         Timer myTimer =new Timer();
@@ -84,11 +106,13 @@ public class VentanaJuegoNivel1 extends JFrame implements KeyListener{
         
         //Cargar las estrellas, bolas del juego
         CargarEstrellas();
+        ChoqueBola();
         
         //Cargar el objeto bonus manzana
         //PODEMOS HACER UN RANDOM PARA QUE APAREZCAN ALEATORIAMENTE SEGUN EL TIEMPO, ENTRE LOS OBJETOS DISPONIBLES
         CargarManzana();
         CargarObjEstrella();
+        QuitaObjEstrella(6000);
 
         //Genera el laberinto grafico a partir del Laberinto virtual
         //LABERINTO DE NIVEL 1, EL INICIAL
@@ -96,12 +120,12 @@ public class VentanaJuegoNivel1 extends JFrame implements KeyListener{
         
 
        
-        this.requestFocus();
-        try{Thread.sleep(1000);
-        //Conversor();
-        }catch(Exception e){}
-        
-        EmpezarPartida();
+       this.requestFocus();
+       try{Thread.sleep(1000);
+       //Conversor();
+       }catch(Exception e){}
+       
+       EmpezarPartida();
 
     }
    
@@ -282,23 +306,86 @@ public class VentanaJuegoNivel1 extends JFrame implements KeyListener{
         panelJuego.setLayout(null);
         
         //PINTAR LA MANZANA
-        ObjManzana.setIcon(manzana.ObjeterManzana());
+        ObjManzana.setIcon(manzana.ObtenerManzana());
         ObjManzana.setBounds(manzana.PosicionX, manzana.PosicionY, 20,20);
         panelJuego.add(ObjManzana);
         ObjManzana.validate();
     }
-    
+    /**Metodo para añadir al panel del juego la estrella que otorga velocidad extra
+     */
     public void CargarObjEstrella(){
-    	estrellaPuntas.EstablecerPosicionInicial(200,200);//coordenadas inicialmente, se puede hacer Random
+    	estrellaPuntas.EstablecerPosicionInicial(180,160);//coordenadas inicialmente, se puede hacer Random
     	estrellaPuntas.EstablecerLaberinto1(LaberintoVirtual.DevolverLaberinto(), LaberintoVirtual.DevolverLargoImagenes(), LaberintoVirtual.DevolverAlturaImagenes());
     
     	panelJuego.setLayout(null);
     	
     	//PINTAR LA ESTRELLA
-    	ObjEstrellaPuntas.setIcon(estrellaPuntas.ObjtenerEstrellaPuntas());
+    	ObjEstrellaPuntas.setIcon(estrellaPuntas.ObtenerEstrellaPuntas());
     	ObjEstrellaPuntas.setBounds(estrellaPuntas.PosicionX, estrellaPuntas.PosicionY, 20,20);
     	panelJuego.add(ObjEstrellaPuntas);
     	ObjEstrellaPuntas.validate();
+    }
+    /**Comprobar si el avatar va comiendo las bolas
+     * Por cada bola que coma se da una puntuacion
+     */
+    public void ChoqueBola()
+    {
+    	for(int w=0;w<estrellas.size();w++){
+    		ObjEstrella est= estrellas.get(w);
+    		
+    		if(Pacman.PosicionX==estrellas.get(w).PosicionX&&Pacman.PosicionY==estrellas.get(w).PosicionY){
+    			System.out.println("Pasa por aquí");
+    			panelJuego.remove(EstrellaBola);
+    			panelJuego.repaint();
+    			estrellas.remove(est);
+    			
+    			Puntuacion(3);//da 10 puntos por cada bola
+    		}
+    	}
+    }
+    /**Metodo para comprobar si el avatar come la manzana
+     * En ese caso se da un extra de puntos
+     */
+    public void ChoqueManzana()
+    {
+    	if(Pacman.PosicionX==manzana.PosicionX&&Pacman.PosicionY==manzana.PosicionY){
+    		System.out.println("Pasa por aqui");
+    		panelJuego.remove(ObjManzana);
+    		panelJuego.repaint();
+    		
+    		Puntuacion(1);//da 100 puntos extra por comerse la manzana
+    		
+    		
+    		/*camino.EstablecerPosicionInicial(180,200);
+    		camino.EstablecerLaberinto1(LaberintoVirtual.DevolverLaberinto(), LaberintoVirtual.DevolverLargoImagenes(), LaberintoVirtual.DevolverAlturaImagenes());
+    		
+    		ObjCamino.setIcon(camino.ObtenerCamino());
+    		ObjCamino.setBounds(camino.PosicionX, camino.PosicionY, 20, 20);
+    		panelJuego.add(ObjCamino);
+    		ObjCamino.validate();*/
+    	}
+    }
+    /**Metodo para quitar la estrella de puntas si pasa un cierto tiempo
+     * @param maxTiempo el tiempo máximo que estará la estrella de puntas
+     */
+    public void QuitaObjEstrella(long maxTiempo){
+    	if(System.currentTimeMillis()-estrellaPuntas.getHoraCreacion()> maxTiempo){
+    		panelJuego.remove(ObjEstrellaPuntas);
+    		panelJuego.repaint();
+    	}
+    		
+    }
+    /**Metodo para chequear si el avatar come a la estrella
+     * En ese caso se le da una velocidad superior al avatar
+     */
+    public void ChoqueEstrellaPuntas()
+    {
+    	if(Pacman.PosicionX==estrellaPuntas.PosicionX&&Pacman.PosicionY==estrellaPuntas.PosicionY){
+    		panelJuego.remove(ObjEstrellaPuntas);
+    		panelJuego.repaint();
+    		
+    		Puntuacion(2);
+    	}
     }
     
     public void EmpezarPartida()
@@ -312,24 +399,56 @@ public class VentanaJuegoNivel1 extends JFrame implements KeyListener{
         	PersComecoco.setBounds(Pacman.PosicionX,Pacman.PosicionY,20,20);
         	PersComecoco.repaint();
         	
-        	/*if(Pacman.PosicionX==estrellas.getPosicionX() &&Pacman.PosicionY==20){
-        		System.out.println("Esta aquí");//Para comprobar si pasa
-        		
-        		
-        	}
+        	ChoqueBola();
+        	ChoqueManzana();
+        	ChoqueEstrellaPuntas();
+        	
+        	QuitaObjEstrella(10000);
+        	
         	//pinta la manzana--NO HACE FALTA PONERLO AQUI DENTRO DEL HILO
         	/*ObjManzana.setIcon(manzana.ImagenManzana);
         	ObjManzana.setBounds(manzana.PosicionX, manzana.PosicionY, 20,20);
         	ObjManzana.repaint();
         	*/
-        	//Conversor();//--AQUI PASA EL TIEMPO MUY RAPIDO
         }
+    }
+    
+    /**Metodo para calcular la puntuación del juego
+     * @param objeto dependiendo el objeto que haya comido se otorgarán puntos
+     */
+    private void Puntuacion(int objeto){
+    	int puntuacion;
+    	puntuacion=Short.parseShort(textPuntuacion.getText());
+    	
+    	switch(objeto){
+    	case 1: puntuacion=puntuacion+100;
+    		//manzana=100pts
+    		break;
+    	case 2: avatar.CambiarVelocidad(4);
+    			puntuacion=puntuacion+150;
+    		//estrella=150pts + velocidad doble
+    		break;
+    	case 3: puntuacion=puntuacion+10;
+    		//bola=10pts
+    		break;
+    	}
+    	textPuntuacion.setText(""+puntuacion);
+    	if(puntuacion>=2000){
+    		parado=false;
+    		acaba();
+    	}
     }
     
     /**Para el contador, las funciones que queremos que haga
      HAY QUE HACER TEST!!!!!!!
      */
      private void Conversor(){
+    	/*try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}*/
     	short seg;
     	short min;
     	
@@ -347,6 +466,9 @@ public class VentanaJuegoNivel1 extends JFrame implements KeyListener{
 			}
 		}
 		seg--;
+		if(min==00&&seg==00){
+			acaba();
+		}
 		
 		textMinutos.setText(""+min);
 		textSegundos.setText(""+seg);
@@ -354,16 +476,19 @@ public class VentanaJuegoNivel1 extends JFrame implements KeyListener{
     
     class Timer implements Runnable
     {
+    	
     	public void run()
     	{
-    		try{
-    			Thread.sleep(1000);
-    			Conversor();
+    		while(!PartidaTerminada&&true){
+	    		try{
+	    			Thread.sleep(1000);
+	    			Conversor();
+	    		}
+	    		catch (InterruptedException e) 
+				{
+					return;
+				}
     		}
-    		catch (InterruptedException e) 
-			{
-				return;
-			}
     	}
     }
     
@@ -427,5 +552,9 @@ public class VentanaJuegoNivel1 extends JFrame implements KeyListener{
             }
         }
     }
+   
+   public void acaba(){
+	   PartidaTerminada=true;
+   }
 }
 
