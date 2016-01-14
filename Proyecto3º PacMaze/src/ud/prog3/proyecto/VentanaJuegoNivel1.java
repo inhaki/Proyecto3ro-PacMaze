@@ -8,9 +8,6 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Random;
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
 import java.awt.Font;
 
 /**Clase principal del nivel 1 del juego
@@ -111,6 +108,7 @@ public class VentanaJuegoNivel1 extends JFrame implements KeyListener{
         lblPuntuacion.setFont(new Font("Tahoma", Font.BOLD, 14));
         lblPuntuacion.setBounds(148, 470, 129, 20);
         getContentPane().add(lblPuntuacion);
+        lblPuntuacion.setVisible(false);
         
         textEstrellas = new JTextField();
         textEstrellas.setForeground(Color.RED);
@@ -674,7 +672,7 @@ public class VentanaJuegoNivel1 extends JFrame implements KeyListener{
         	ChoqueBolaMala();
         	ChoqueCalavera();    	
         
-        	QuitaObjEstrella(6500);
+        	QuitaObjEstrella(7500);
         	
         }
     }
@@ -705,7 +703,7 @@ public class VentanaJuegoNivel1 extends JFrame implements KeyListener{
     			puntuacion=puntuacion/2;
 			break;
     	case 5: GameOver();//acaba por no pasar el nivel
-    		JOptionPane.showMessageDialog(this, "Has capturado la calavera que no debías \n----------------GAMEis0VER---------------");
+    			JOptionPane.showMessageDialog(this, "Has capturado la calavera que no debías \n----------------GAMEis0VER---------------");
     		break;
     	}
     	textPuntuacion.setText(""+puntuacion);
@@ -731,12 +729,7 @@ public class VentanaJuegoNivel1 extends JFrame implements KeyListener{
      HAY QUE HACER TEST!!!!!!!
      */
      private void Conversor(){
-    	/*try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
+    	
     	short seg;
     	short min;
     	
@@ -756,6 +749,7 @@ public class VentanaJuegoNivel1 extends JFrame implements KeyListener{
 		seg--;
 		if(min==00&&seg==00){
 			textSegundos.setText(""+seg);
+			JOptionPane.showMessageDialog(VentanaJuegoNivel1.this, "Te has quedado sin tiempo \n la partida ha terminado", "INFO", JOptionPane.INFORMATION_MESSAGE);
 			acaba();//acaba por no pasarse el nivel
 		}
 		

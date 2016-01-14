@@ -54,6 +54,7 @@ public class VentanaJuegoNivel3 extends JFrame implements KeyListener{
     private JLabel lblHighScoreNivel;
     
     /**CONSTRUCTOR DE LA VENTANA DEL JUEGO NIVEL 3
+     *
      */
     public VentanaJuegoNivel3(int personaje)
     {
@@ -72,7 +73,6 @@ public class VentanaJuegoNivel3 extends JFrame implements KeyListener{
         panelJuego.setBounds(20, 20, 400, 400);
         
         getContentPane().add(panelJuego);
-        
         //CONTADOR DEL JUEGO
         //CASILLA MINS
         textMinutos = new JTextField();
@@ -122,7 +122,6 @@ public class VentanaJuegoNivel3 extends JFrame implements KeyListener{
         textEstrellas.setVisible(true);
         textEstrellas.setText("0");
         
-        
         lblEstCapturadas = new JLabel("E.Capturadas");
         lblEstCapturadas.setFont(new Font("Tahoma", Font.BOLD, 15));
         lblEstCapturadas.setBounds(10, 470, 113, 20);
@@ -157,7 +156,7 @@ public class VentanaJuegoNivel3 extends JFrame implements KeyListener{
 			}
         	
         });
-        
+        //cierra la BBDD al cerrar la ventana
         addWindowListener( new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
@@ -524,6 +523,7 @@ public class VentanaJuegoNivel3 extends JFrame implements KeyListener{
     }
     //COMPROBAR SI LA MANZANA CHOCA CON EL AVATAR
     public void ChoqueManzana(){
+    	
     	if(Pacman.PosicionX==manzana.PosicionX&&Pacman.PosicionY==manzana.PosicionY){
     		panelJuego.remove(ObjManzana);
     		panelJuego.repaint();
@@ -713,8 +713,8 @@ public class VentanaJuegoNivel3 extends JFrame implements KeyListener{
     			puntuacion=puntuacion/2;
 			break;
     	case 5: GameOver();//acaba por no pasar el nivel
-		JOptionPane.showMessageDialog(this, "Has capturado la calavera que no debías \n----------------GAMEis0VER---------------");
-		break;
+				JOptionPane.showMessageDialog(this, "Has capturado la calavera que no debías \n----------------GAMEis0VER---------------");
+			break;
     	}
     	textPuntuacion.setText(""+puntuacion);
     	if(puntuacion>=2000){//PUNTUACION??
@@ -759,6 +759,7 @@ public class VentanaJuegoNivel3 extends JFrame implements KeyListener{
 			seg--;
 			if(min==00&&seg==00){
 				textSegundos.setText(""+seg);
+				JOptionPane.showMessageDialog(VentanaJuegoNivel3.this, "Te has quedado sin tiempo \n la partida ha terminado", "INFO", JOptionPane.INFORMATION_MESSAGE);
 				acaba();//acaba por no pasarse el nivel
 			}
 			

@@ -734,6 +734,7 @@ public class VentanaJuegoNivel2 extends JFrame implements KeyListener{
 		seg--;
 		if(min==00&&seg==00){
 			textSegundos.setText(""+seg);
+			JOptionPane.showMessageDialog(VentanaJuegoNivel2.this, "Te has quedado sin tiempo \n la partida ha terminado", "INFO", JOptionPane.INFORMATION_MESSAGE);
 			acaba();
 		}
 		
