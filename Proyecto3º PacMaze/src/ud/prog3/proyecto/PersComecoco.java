@@ -2,9 +2,8 @@ package ud.prog3.proyecto;
 
 import javax.swing.*;
 
-public class PersComecoco extends PersonajeJuego{
-	
-	private static boolean ESFERA_COCO=false;//dibujado para el caso de choque
+public class PersComecoco extends PersonajeJuego
+{
 	
 	//Constructor inicial, saldrá la imagen orientada a la derecha
 	public PersComecoco(){
@@ -15,6 +14,15 @@ public class PersComecoco extends PersonajeJuego{
     {
         MoverPersonaje();
     }
+	
+	public void MoverPacman2()
+	{
+		MoverPersonaje2();
+	}
+	
+	public void MoverPacman3(){
+		MoverPersonaje3();
+	}
 	
 	 @Override
 	    public void CambiarImagen()
